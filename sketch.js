@@ -14,38 +14,38 @@ class BouncingText {
 		this.y += sin(this.angle) * this.speed;
 
 		//these checks need more texting to see if grouping conditions breaks edge cases or not
-		if (this.x < 0) {
+		if (this.x < 64) {
 			if (this.angle > 90 && this.angle < 270) {
 				this.angle = 180 - this.angle;
-				this.color = color(random(100,255), random(100,255), random(100,255))
+				this.color = color(random(100,200), random(100,200), random(100,200))
 				if (this.angle < 0) {
 					this.angle += 360;
 				}
 			}
 		}
-		else if (this.x > width) {
+		else if (this.x > width - 64) {
 			if (this.angle < 90 || this.angle > 270) {
 				this.angle = 180 - this.angle;
-				this.color = color(random(100,255), random(100,255), random(100,255))
+				this.color = color(random(100,200), random(100,200), random(100,200))
 				if (this.angle < 0) {
 					this.angle += 360;
 				}
 			}
 		}
 
-		if (this.y < 0) {
+		if (this.y < 32) {
 			if (this.angle > 180) {
 				this.angle = 360 - this.angle;
-				this.color = color(random(100,255), random(100,255), random(100,255))
+				this.color = color(random(100,200), random(100,200), random(100,200))
 				if (this.angle < 0) {
 					this.angle += 360;
 				}
 			}
 		}
-		else if (this.y > height) {
+		else if (this.y > height-32) {
 			if (this.angle < 180) {
 				this.angle = 360 - this.angle;
-				this.color = color(random(100,255), random(100,255), random(100,255))
+				this.color = color(random(100,200), random(100,200), random(100,200))
 			}
 		}
 
