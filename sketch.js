@@ -1,6 +1,6 @@
 const message = "This is a template repository\nfor the elective course Creative Coding\nCommunication Design, Politecnico di Milano";
 
-const SLEEPTIME = 3000; //time to sleep in milliseconds
+const SLEEPTIME = 5000; //time to sleep in milliseconds
 
 //matrix to draw the windows logo from
 const WINDOWSLOGO = [
@@ -51,6 +51,26 @@ const IEXP = [
 	[112, [48, 48, 207],        -1,        -1, 0, 0, [48, 48, 207], [48, 96, 159], [48, 96, 159], [0, 96, 207], [48, 96, 255], [48, 96, 255], [0, 96, 159], [0, 96, 159], 		  -1, 		 -1],
 	[       -1, [48, 48, 207], [0, 96, 159],        -1,        -1, [0, 48, 159], 0, [0, 0, 159], [48, 48, 207], [48, 96, 159], [0, 96, 159], [0, 96, 159],        -1,        -1,        -1,        -1],
 	[       -1,        -1, [48, 48, 207], [48, 48, 207], [48, 48, 207],        -1,        -1,        -1,        -1,        -1,        -1,        -1,        -1,        -1,        -1,        -1]
+];
+
+//clock icon
+const CLOCK = [
+	[128, 128, 128, -1, 128, 128, 128, 128],
+	[128, 255, 255, 0, 255, 255, 192, 0, 128, 128, 128, 128, 128, 128, 128],
+	[128, [0, 0, 255], 255, 0, 255, [0, 0, 255], 192, 0, [0, 0, 128], [0, 0, 128], [0, 0, 128], [0, 0, 128], [0, 0, 128], [0, 0, 128], 0],
+	[128, 255, 255, 0, 255, 255, 192, 0, [0, 0, 128], [0, 0, 128], 192, 0, 192, 0, 0],
+	[128, [0, 0, 255], 255, 0, 255, [0, 0, 255], 192, 0, 128, 128, 128, 128, 128, 128, 0],
+	[128, 255, 255, 0, 255, 255, 192, 0, 255, 255, 255, 255, 255, 128, 0],
+	[0, 0, 0, 255, 0, 0, 0, 0, 255, 255, 255, 255, 255, 128, 0],
+	[-1, 128, 192, 255, 255, 255, 255, 255, 255, [128, 0, 0], [128, 0, 0], [128, 0, 0], [128, 0, 0], [128, 0, 0], 0],
+	[-1, 128, 192, 255, 255, 255, 255, 255, [128, 0, 0], [128, 0, 0], [255, 0, 0], [255, 0, 0], [255, 0, 0], [128, 0, 0], 0],
+	[-1, 128, 192, 255, 255, 255, 255, [128, 0, 0], [128, 0, 0], 128, 255, 255, 255, 128, [128, 0, 0], 0],
+	[-1, 128, 192, 255, 255, 255, 255, [128, 0, 0], [255, 0, 0], 255, 255, [0, 0, 128], 255, 255, [255, 0, 0], 0],
+	[-1, 128, 192, 255, 255, 255, 255, [128, 0, 0], [255, 0, 0], 128, 255, [0, 0, 128], [0, 0, 128], 255, [255, 0, 0], 0],
+	[-1, 128, 128, 128, 128, 128, 128, [128, 0, 0], [255, 0, 0], 255, 255, 255, 255, 255, [255, 0, 0], 0],
+	[-1, 0, 0, 0, 0, 0, 0, [128, 0, 0], [128, 0, 0], 128, 255, 128, 255, 128, [128, 0, 0], 0],
+	[-1, -1, -1, -1, -1, -1, -1, -1, [128, 0, 0], [128, 0, 0], [255, 0, 0], [255, 0, 0], [255, 0, 0], [128, 0, 0], 0],
+	[-1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0]
 ];
 
 class BouncingText {
@@ -115,10 +135,11 @@ let wakeup = 0;
 let wakeupTime = 0;
 
 function preload() {
-	// put preload code here
+	window.msSans = loadFont("assets/W95FA.otf");
 }
 
 function setup() {
+	console.log(msSans)
 	createCanvas(windowWidth, windowHeight);
 
 	window.pixelSide = min(height / 480, width / 640);
@@ -200,9 +221,67 @@ function windows98() {
 	rect(2 * pixelSide, height - 3 * pixelSide, 54 * pixelSide, pixelSide)
 	rect(55 * pixelSide, height - 24 * pixelSide, pixelSide, 22 * pixelSide)
 
+	//w98 taskbar thingies where you click and drag
+	fill(255);
+	rect(59 * pixelSide, height - 24 * pixelSide, pixelSide, 22 * pixelSide)
+
+	rect(62 * pixelSide, height - 22 * pixelSide, pixelSide, 17 * pixelSide)
+	rect(62 * pixelSide, height - 22 * pixelSide, 2 * pixelSide, pixelSide)
+
+	rect(96 * pixelSide, height - 24 * pixelSide, pixelSide, 22 * pixelSide)
+	
+	rect(99 * pixelSide, height - 22 * pixelSide, pixelSide, 17 * pixelSide)
+	rect(99 * pixelSide, height - 22 * pixelSide, 2 * pixelSide, pixelSide)
+
+	fill(128);
+	rect(58 * pixelSide, height - 24 * pixelSide, pixelSide, 22 * pixelSide)
+
+	rect(64 * pixelSide, height - 22 * pixelSide, pixelSide, 18 * pixelSide)
+	rect(62 * pixelSide, height - 5 * pixelSide, 3 * pixelSide, pixelSide)
+
+	rect(95 * pixelSide, height - 24 * pixelSide, pixelSide, 22 * pixelSide)
+
+	rect(101 * pixelSide, height - 22 * pixelSide, pixelSide, 18 * pixelSide)
+	rect(99 * pixelSide, height - 5 * pixelSide, 3 * pixelSide, pixelSide)
+
+	//w98 clock
+	fill(128);
+	rect(width - 83 * pixelSide, height - 24 * pixelSide, 80 * pixelSide, pixelSide)
+	rect(width - 83 * pixelSide, height - 24 * pixelSide, pixelSide, 21 * pixelSide)
+
+	fill(255)
+	rect(width - 83 * pixelSide, height - 3 * pixelSide, 81 * pixelSide, pixelSide)
+	rect(width - 3 * pixelSide, height - 24 * pixelSide, pixelSide, 22 * pixelSide)
+
 	drawMatrix(6 * pixelSide, height - 20 * pixelSide, WINDOWSLOGO);
 	drawMatrix(25 * pixelSide, height - 18 * pixelSide, START);
 	drawMatrix(72 * pixelSide, height - 21 * pixelSide, IEXP);
+	drawMatrix(width - 80 * pixelSide, height - 21 * pixelSide, CLOCK);
+
+	textAlign(RIGHT, TOP);
+	textSize(9 * pixelSide);
+	//textFont(msSans);
+	fill(0);
+
+	let ampm = "PM";
+	if (hour() > 0 && hour() < 13) {
+		ampm = "AM"
+	}
+
+	let hourText = hour();
+	if (hour() == 0) {
+		hourText = "12"
+	}
+	else if (hour() > 12) {
+		hourText = hour() - 12;
+	}
+
+	let minuteText = minute();
+	if (minute() < 10) {
+		minuteText = "0" + minute();
+	}
+
+	text(hourText+":"+minuteText+" "+ampm, width - 14 * pixelSide, height - 17 * pixelSide);
 	
 	pop();
 }
