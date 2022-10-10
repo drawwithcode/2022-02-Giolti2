@@ -155,32 +155,32 @@ function windows98() {
 
 	//w98 taskbar
 	fill(193, 192, 193); 
-	rect(0, 452 * pixelSide, width, 28 * pixelSide);
+	rect(0, height - 28 * pixelSide, width, 28 * pixelSide);
 
 	fill(223);
-	rect(0, 452 * pixelSide, width, pixelSide);
+	rect(0, height - 28 * pixelSide, width, pixelSide);
 
 	fill(255);
-	rect(0, 453 * pixelSide, width, pixelSide);
+	rect(0, height - 27 * pixelSide, width, pixelSide);
 
 	//w98 start button
-	rect(2 * pixelSide, 456 * pixelSide, 53 * pixelSide, pixelSide)
-	rect(2 * pixelSide, 456 * pixelSide, pixelSide, 21 * pixelSide)
+	rect(2 * pixelSide, height - 24 * pixelSide, 53 * pixelSide, pixelSide)
+	rect(2 * pixelSide, height - 24 * pixelSide, pixelSide, 21 * pixelSide)
 
 	fill(223);
-	rect(3 * pixelSide, 457 * pixelSide, 51 * pixelSide, pixelSide)
-	rect(3 * pixelSide, 457 * pixelSide, pixelSide, 19 * pixelSide)
+	rect(3 * pixelSide, height - 23 * pixelSide, 51 * pixelSide, pixelSide)
+	rect(3 * pixelSide, height - 23 * pixelSide, pixelSide, 19 * pixelSide)
 
 	fill(128);
-	rect(3 * pixelSide, 476 * pixelSide, 52 * pixelSide, pixelSide)
-	rect(54 * pixelSide, 457 * pixelSide, pixelSide, 20 * pixelSide)
+	rect(3 * pixelSide, height - 4 * pixelSide, 52 * pixelSide, pixelSide)
+	rect(54 * pixelSide, height - 23 * pixelSide, pixelSide, 20 * pixelSide)
 
 	fill(0);
-	rect(2 * pixelSide, 477 * pixelSide, 54 * pixelSide, pixelSide)
-	rect(55 * pixelSide, 456 * pixelSide, pixelSide, 22 * pixelSide)
+	rect(2 * pixelSide, height - 3 * pixelSide, 54 * pixelSide, pixelSide)
+	rect(55 * pixelSide, height - 24 * pixelSide, pixelSide, 22 * pixelSide)
 
-	drawMatrix(6 * pixelSide, 460 * pixelSide, WINDOWSLOGO);
-	drawMatrix(25 * pixelSide, 462 * pixelSide, START);
+	drawMatrix(6 * pixelSide, height - 20 * pixelSide, WINDOWSLOGO);
+	drawMatrix(25 * pixelSide, height - 18 * pixelSide, START);
 	
 	pop();
 }
