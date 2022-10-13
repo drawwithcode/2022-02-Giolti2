@@ -1,6 +1,9 @@
 const message = "This is a template repository\nfor the elective course Creative Coding\nCommunication Design, Politecnico di Milano";
 
-const SLEEPTIME = 5000; //time to sleep in milliseconds
+const STEPS = 50;
+const LINE_NUMBER = 10;
+const SLEEPTIME = 2000; //time to sleep in milliseconds
+const BLEED = 100; //extra range for curve points generation
 
 //matrix to draw the windows logo from
 const WINDOWSLOGO = [
@@ -131,15 +134,170 @@ class BouncingText {
 	}
 }
 
+class BezierSpline {
+	constructor() {
+		this.curve1 = new BezierCurve();
+		this.curve2 = this.newContinuity(this.curve1, 1);
+
+		this.step = 0;
+
+		let path1 = this.curve1.arraify(STEPS);
+
+		let path2 = this.curve2.arraify(STEPS);
+		path2.shift();
+
+		this.points = path1.concat(path2);
+
+		push()
+		colorMode(HSB)
+		this.color = color(random(0,360), 100, 100)
+		pop()
+	}
+
+	update() {
+		push()
+		
+		strokeWeight(10)
+
+		for (let i = 1; i < STEPS; i++){
+			stroke(red(this.color), green(this.color), blue(this.color), i * 255/STEPS)
+			line(this.points[i - 1 + this.step].x, this.points[i - 1 + this.step].y, this.points[i + this.step].x, this.points[i + this.step].y);
+		}
+
+		pop()
+
+		this.step++;
+		
+		if (this.step == 50) {
+			this.curve1 = this.curve2;
+			this.curve2 = this.newContinuity(this.curve1, 1);
+			this.step = 0;
+
+			let path1 = this.curve1.arraify(STEPS);
+
+			let path2 = this.curve2.arraify(STEPS);
+			path2.shift();
+
+			this.points = path1.concat(path2);
+		}
+	}
+
+	newContinuity(curve, degree) {
+		let newPoints = [];
+
+		newPoints[0] = curve.p3;
+
+		if (degree > 0) {
+			let x = (2 * curve.p3.x) - (curve.p2.x);
+			let y = (2 * curve.p3.y) - (curve.p2.y);
+
+			newPoints[1] = new BezierPoint(x, y);
+		}
+
+		if (degree > 1) {
+			let x = (4 * curve.p3.x) - (4 * curve.p2.x) + curve.p1.x;
+			let y = (4 * curve.p3.y) - (4 * curve.p2.y) + curve.p1.y;
+
+			newPoints[2] = new BezierPoint(x, y);
+		}
+
+		return new BezierCurve(...newPoints);
+	}
+}
+
+class BezierCurve {
+	MINRADIUS = 50;
+	MAXRADIUS = 500;
+
+	constructor(p0, p1, p2, p3) {
+		
+		let startPoint;
+		let endPoint;
+		let control1;
+		let control2;
+
+		let angle;
+		let radius = random(this.MINRADIUS, this.MAXRADIUS);
+
+		if (p0 === undefined) {
+			startPoint = new BezierPoint(random(-BLEED, width + BLEED), random(-BLEED, height + BLEED));
+		}
+		else {
+			startPoint = p0;
+		}
+
+		if (p1 === undefined) {
+			let cangle1 = random(0, 360);
+			control1 = new BezierPoint(startPoint.x + cos(cangle1) * radius / 2, startPoint.y + sin(cangle1) * radius / 2);
+		}
+		else {
+			control1 = p1;
+		}
+
+		if (p3 === undefined) {
+			angle;
+			radius;
+
+			do {
+				angle = random(0, 360);
+				radius = random(this.MINRADIUS, this.MAXRADIUS);
+				endPoint = new BezierPoint(startPoint.x + cos(angle) * radius, startPoint.y + sin(angle) * radius);
+			}
+			while (endPoint.x < -BLEED || endPoint.x > width + BLEED || endPoint.y < -BLEED || endPoint.y > height + BLEED)
+		}
+		else {
+			endPoint = p3;
+		}
+
+		if (p2 === undefined) {
+			let cangle2 = random(0, 360);
+			control2 = new BezierPoint(endPoint.x + cos(cangle2) * radius / 2, endPoint.y + sin(cangle2) * radius / 2);
+		}
+		else {
+			control2 = p2;
+		}
+
+		this.p0 = startPoint;
+		this.p1 = control1;
+		this.p2 = control2;
+		this.p3 = endPoint;
+	}
+
+	//returns array of length N+1 containing N+1 consecutive coordinates along the curve
+	arraify(n) {
+		let increment = 1 / n;
+		let points = [];
+
+		for (let t = 0; t <= 1; t += increment){
+			let x = 0;
+			let y = 0;
+
+			x = ((1 - t) ** 3) * this.p0.x + 3 * t * ((1 - t) ** 2) * this.p1.x + 3 * (1 - t) * (t ** 2) * this.p2.x + (t ** 3) * this.p3.x;
+			y = ((1 - t) ** 3) * this.p0.y + 3 * t * ((1 - t) ** 2) * this.p1.y + 3 * (1 - t) * (t ** 2) * this.p2.y + (t ** 3) * this.p3.y;
+
+			points.push(new BezierPoint(x, y));
+		}
+
+		return points;
+	}
+}
+
+//not really necessary but helps me keep track of things
+class BezierPoint {
+	constructor(x, y) {
+		this.x = x;
+		this.y = y;
+	}
+}
+
 let wakeup = 0;
 let wakeupTime = 0;
 
-function preload() {
-	window.msSans = loadFont("assets/W95FA.otf");
-}
+/* preload() {
+	//window.msSans = loadFont("./assets/W95FA.otf");
+}*/
 
 function setup() {
-	console.log(msSans)
 	createCanvas(windowWidth, windowHeight);
 
 	window.pixelSide = min(height / 480, width / 640);
@@ -150,6 +308,12 @@ function setup() {
 	textSize(16);
 
 	window.startingText = new BouncingText();
+
+	window.lines = [];
+
+	for (let i = 0; i < LINE_NUMBER; i++) {
+		lines.push(new BezierSpline());
+	}
 }
 
 function draw() {
@@ -164,6 +328,7 @@ function draw() {
 		//screensaver goes here
 		background(0);
 		startingText.update();
+		lines.forEach(element => element.update());
 	}
 	
 }
